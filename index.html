@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="kk" data-theme="product" data-lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>raissov — Backend Developer</title>
+<meta name="description" content="Beknazar Abdimutali (raissov) — backend developer from Astana, Kazakhstan. Writing Go. Building systems.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ====================================================
+   THEME TOKENS  (data-theme on <html>)
+   ==================================================== */
+[data-theme="product"] {
+  --bg:        #FAFAFA;
+  --bg2:       #F3F4F6;
+  --card:      #FFFFFF;
+  --fg:        #111111;
+  --fg2:       #555555;
+  --fg3:       #9CA3AF;
+  --line:      #E5E7EB;
+  --acc:       #2563EB;
+  --acc-s:     #EFF6FF;
+  --acc-t:     #BFDBFE;
+  --r:         12px;
+  --ff:        'DM Sans', system-ui, sans-serif;
+  --ffm:       'JetBrains Mono', monospace;
+  --ffd:       'DM Sans', system-ui, sans-serif;
+  --shadow:    0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.05);
+  --shadow-h:  0 4px 20px rgba(0,0,0,.12);
+}
+[data-theme="editorial"] {
+  --bg:        #F2EFE8;
+  --bg2:       #EAE6DC;
+  --card:      #F8F6EF;
+  --fg:        #0E0E0C;
+  --fg2:       #3A372F;
+  --fg3:       #8B8679;
+  --line:      #D4CFC4;
+  --acc:       #E63E1F;
+  --acc-s:     #FEF3F0;
+  --acc-t:     #FBCFC4;
+  --r:         0px;
+  --ff:        system-ui, sans-serif;
+  --ffm:       'JetBrains Mono', monospace;
+  --ffd:       'Instrument Serif', Georgia, serif;
+  --shadow:    none;
+  --shadow-h:  none;
+}
+[data-theme="terminal"] {
+  --bg:        #0D1117;
+  --bg2:       #161B22;
+  --card:      #161B22;
+  --fg:        #E6EDF3;
+  --fg2:       #8D96A0;
+  --fg3:       #484F58;
+  --line:      #30363D;
+  --acc:       #57A55A;
+  --acc-s:     #091A09;
+  --acc-t:     #122012;
+  --r:         4px;
+  --ff:        'JetBrains Mono', monospace;
+  --ffm:       'JetBrains Mono', monospace;
+  --ffd:       'JetBrains Mono', monospace;
+  --shadow:    none;
+  --shadow-h:  none;
+}
+
+/* ====================================================
+   RESET
+   ==================================================== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{
+  background:var(--bg);color:var(--fg);
+  font-family:var(--ff);font-size:16px;line-height:1.65;
+  overflow-x:hidden;
+  transition:background .18s ease,color .18s ease;
+}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:inherit}
+
+/* ====================================================
+   LAYOUT
+   ==================================================== */
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+section{padding:80px 0}
+@media(max-width:768px){section{padding:56px 0}.wrap{padding:0 18px}}
+
+/* ====================================================
+   GRAIN OVERLAY (editorial only)
+   ==================================================== */
+#grain{
+  position:fixed;inset:0;pointer-events:none;z-index:999;
+  opacity:0;transition:opacity .3s;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  mix-blend-mode:multiply;
+}
+[data-theme="editorial"] #grain{opacity:.055}
+
+/* ====================================================
+   TYPOGRAPHY
+   ==================================================== */
+.eyebrow{
+  font-family:var(--ffm);font-size:11px;
+  letter-spacing:.2em;text-transform:uppercase;
+  color:var(--acc);display:block;margin-bottom:10px;
+}
+[data-theme="editorial"] .eyebrow{color:var(--fg3)}
+
+/* product headings */
+[data-theme="product"] h1{font-size:clamp(2.6rem,9vw,5.5rem);font-weight:700;line-height:1.04;letter-spacing:-.03em}
+[data-theme="product"] h2{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;line-height:1.1;letter-spacing:-.02em}
+[data-theme="product"] h3{font-size:1.05rem;font-weight:600;line-height:1.3}
+
+/* editorial headings */
+[data-theme="editorial"] h1{font-family:var(--ffd);font-size:clamp(3.5rem,13vw,10rem);font-weight:400;line-height:.88;letter-spacing:-.02em}
+[data-theme="editorial"] h2{font-family:var(--ffd);font-size:clamp(2rem,5.5vw,4.5rem);font-weight:400;line-height:.95;letter-spacing:-.01em}
+[data-theme="editorial"] h3{font-family:var(--ffd);font-size:1.5rem;font-weight:400;line-height:1.2}
+[data-theme="editorial"] h1 em,[data-theme="editorial"] h2 em{font-style:italic;color:var(--acc)}
+
+/* terminal headings */
+[data-theme="terminal"] h1{font-size:clamp(1.6rem,5vw,2.8rem);font-weight:700;line-height:1.3;letter-spacing:-.01em}
+[data-theme="terminal"] h2{font-size:clamp(1.1rem,3vw,1.6rem);font-weight:700;line-height:1.3}
+[data-theme="terminal"] h3{font-size:.9rem;font-weight:700}
+
+/* ====================================================
+   NAV
+   ==================================================== */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:80;
+  padding:12px 24px;display:flex;align-items:center;
+  justify-content:space-between;
+  transition:background .2s,border-color .2s,backdrop-filter .2s;
+  border-bottom:1px solid transparent;
+}
+nav.stuck{
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  border-bottom-color:var(--line);
+}
+[data-theme="product"] nav.stuck{background:rgba(250,250,250,.85)}
+[data-theme="editorial"] nav.stuck{background:rgba(242,239,232,.88)}
+[data-theme="terminal"] nav.stuck{background:rgba(13,17,23,.9)}
+
+.nav-logo{
+  font-family:var(--ffm);font-size:14px;font-weight:500;
+  letter-spacing:.08em;color:var(--fg);
+}
+[data-theme="editorial"] .nav-logo{
+  font-family:var(--ffd);font-style:italic;
+  font-size:20px;letter-spacing:0;
+}
+[data-theme="terminal"] .nav-logo::before{content:'~/';color:var(--acc)}
+
+.lang-sw{
+  display:flex;gap:2px;padding:3px;
+  background:var(--bg2);border:1px solid var(--line);border-radius:999px;
+}
+.lang-sw button{
+  appearance:none;border:none;background:transparent;
+  padding:4px 10px;font-family:var(--ffm);font-size:10px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--fg3);
+  border-radius:999px;transition:all .15s;
+}
+.lang-sw button.on{background:var(--fg);color:var(--bg)}
+.lang-sw button:hover:not(.on){color:var(--fg)}
+
+/* ====================================================
+   HERO
+   ==================================================== */
+.hero{
+  min-height:100svh;display:flex;flex-direction:column;
+  justify-content:center;padding-top:90px;padding-bottom:56px;
+  position:relative;
+}
+
+/* status badge */
+.badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 12px;border-radius:999px;margin-bottom:24px;
+  font-family:var(--ffm);font-size:11px;
+  background:var(--acc-s);color:var(--acc);border:1px solid var(--acc-t);
+}
+.bdot{width:6px;height:6px;border-radius:50%;background:var(--acc);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+
+/* product hero grid */
+[data-theme="product"] .hero-inner{
+  padding-bottom:40px;
+  border-bottom:1px solid var(--line);
+}
+[data-theme="product"] .hero-tagline{
+  font-size:clamp(1rem,2.5vw,1.25rem);color:var(--fg2);
+  margin-top:16px;font-weight:400;
+}
+[data-theme="product"] .hero-stats{
+  display:flex;flex-wrap:wrap;gap:32px;margin-top:36px;
+}
+[data-theme="product"] .hero-stat .k{
+  font-family:var(--ffm);font-size:10px;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--fg3);display:block;margin-bottom:4px;
+}
+[data-theme="product"] .hero-stat .v{font-size:14px;color:var(--fg2)}
+
+/* editorial hero */
+[data-theme="editorial"] .hero{padding-top:140px}
+[data-theme="editorial"] .hero-name-row{padding-bottom:24px;border-bottom:1px solid var(--line)}
+[data-theme="editorial"] .hero-sub{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:28px;
+}
+[data-theme="editorial"] .hero-sub-item .k{
+  font-family:var(--ffm);font-size:10px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--fg3);display:block;margin-bottom:6px;
+}
+[data-theme="editorial"] .hero-sub-item .v{font-size:13px;color:var(--fg2);line-height:1.5}
+@media(max-width:600px){
+  [data-theme="editorial"] .hero-sub{grid-template-columns:1fr;gap:16px}
+}
+
+/* terminal hero */
+[data-theme="terminal"] .hero{padding-top:120px}
+.term-prompt{
+  font-family:var(--ffm);font-size:12px;color:var(--fg3);margin-bottom:14px;
+}
+.term-prompt .p-u{color:var(--acc)}
+.term-prompt .p-h{color:#58A6FF}
+.blink{
+  display:inline-block;width:10px;height:1.1em;background:var(--acc);
+  vertical-align:text-bottom;margin-left:3px;
+  animation:blink 1s step-end infinite;
+}
+@keyframes blink{50%{opacity:0}}
+.term-grid{
+  margin-top:40px;display:grid;grid-template-columns:repeat(2,1fr);
+  gap:0;border:1px solid var(--line);
+}
+.term-cell{
+  padding:20px 24px;border:1px solid var(--line);
+  font-family:var(--ffm);font-size:12px;
+}
+.term-cell .k{color:var(--fg3);margin-bottom:4px;font-size:10px;letter-spacing:.1em}
+.term-cell .v{color:var(--fg2)}
+@media(max-width:560px){.term-grid{grid-template-columns:1fr}}
+
+/* ====================================================
+   CARDS
+   ==================================================== */
+.card{
+  background:var(--card);border:1px solid var(--line);
+  border-radius:var(--r);padding:24px;
+  transition:box-shadow .2s,transform .2s,border-color .2s;
+  box-shadow:var(--shadow);
+}
+.card:hover{box-shadow:var(--shadow-h);transform:translateY(-2px)}
+[data-theme="editorial"] .card:hover{border-color:var(--acc)}
+[data-theme="terminal"] .card:hover{border-color:var(--acc)}
+
+/* ====================================================
+   ABOUT
+   ==================================================== */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+@media(max-width:768px){.about-grid{grid-template-columns:1fr}}
+.about-bio p{font-size:16px;color:var(--fg2);line-height:1.75}
+.about-bio p+p{margin-top:14px}
+.facts{display:flex;flex-direction:column;gap:12px}
+.fact{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 18px;background:var(--bg2);
+  border:1px solid var(--line);border-radius:var(--r);
+}
+.fact-ico{font-size:18px;flex-shrink:0}
+.fact-k{font-family:var(--ffm);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--fg3);display:block;margin-bottom:2px}
+.fact-v{font-size:13px;font-weight:500}
+
+/* ====================================================
+   STACK
+   ==================================================== */
+.stack-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(155px,1fr));
+  gap:10px;
+}
+.stack-chip{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 16px;background:var(--card);
+  border:1px solid var(--line);border-radius:var(--r);
+  font-size:14px;font-weight:500;
+  transition:border-color .15s,background .15s,transform .15s;
+  cursor:default;
+}
+.stack-chip:hover{border-color:var(--acc);background:var(--acc-s);transform:translateY(-1px)}
+.stack-ico{font-size:18px;flex-shrink:0}
+[data-theme="terminal"] .stack-chip{font-family:var(--ffm);font-size:12px}
+[data-theme="terminal"] .stack-chip::before{content:'$ ';color:var(--acc)}
+
+/* ====================================================
+   LEARNING
+   ==================================================== */
+.learn-card{
+  display:flex;align-items:flex-start;gap:20px;
+  padding:28px 32px;
+  background:var(--acc-s);border:1px solid var(--acc-t);
+  border-radius:var(--r);max-width:520px;
+}
+.learn-ico{font-size:36px;flex-shrink:0;line-height:1}
+.learn-name{font-size:20px;font-weight:700;color:var(--fg);margin-bottom:6px}
+[data-theme="editorial"] .learn-name{font-family:var(--ffd);font-style:italic;font-size:26px;font-weight:400}
+[data-theme="terminal"] .learn-name{font-family:var(--ffm);font-size:16px}
+.learn-desc{font-size:14px;color:var(--fg2);line-height:1.6}
+
+/* ====================================================
+   PROJECTS
+   ==================================================== */
+.projects-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+@media(max-width:640px){.projects-grid{grid-template-columns:1fr}}
+.proj-card{
+  background:var(--card);border:1px solid var(--line);
+  border-radius:var(--r);padding:28px;
+  transition:all .2s;box-shadow:var(--shadow);
+  display:flex;flex-direction:column;
+}
+.proj-card:hover{border-color:var(--acc);transform:translateY(-3px);box-shadow:var(--shadow-h)}
+.proj-tag{
+  display:inline-block;padding:3px 8px;border-radius:4px;
+  font-family:var(--ffm);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  background:var(--acc-s);color:var(--acc);margin-bottom:14px;
+  border:1px solid var(--acc-t);
+}
+.proj-title{font-size:18px;font-weight:600;margin-bottom:8px;color:var(--fg)}
+[data-theme="editorial"] .proj-title{font-family:var(--ffd);font-style:italic;font-size:22px;font-weight:400}
+[data-theme="terminal"] .proj-title{font-family:var(--ffm);font-size:14px}
+.proj-desc{font-size:14px;color:var(--fg2);line-height:1.65;flex:1}
+.proj-tech{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+.pill{
+  padding:2px 8px;font-family:var(--ffm);font-size:10px;
+  border:1px solid var(--line);border-radius:4px;color:var(--fg3);
+}
+.proj-links{display:flex;gap:14px;margin-top:20px}
+.proj-link{
+  font-family:var(--ffm);font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--acc);
+  display:flex;align-items:center;gap:4px;
+  transition:opacity .15s;
+}
+.proj-link:hover{opacity:.7}
+.proj-card.soon{
+  border-style:dashed;opacity:.6;
+  align-items:center;justify-content:center;
+  text-align:center;min-height:180px;
+}
+.soon-ico{font-size:28px;margin-bottom:10px}
+
+/* ====================================================
+   CONTACT
+   ==================================================== */
+.contact-section{background:var(--bg2)}
+.contact-subtitle{font-size:16px;color:var(--fg2);margin-bottom:32px;max-width:480px}
+.contact-links{display:flex;flex-wrap:wrap;gap:12px}
+@media(max-width:480px){.contact-link{flex:1 1 calc(50% - 6px)}}
+.contact-link{
+  display:flex;align-items:center;gap:10px;
+  padding:14px 22px;background:var(--card);
+  border:1px solid var(--line);border-radius:var(--r);
+  font-size:14px;font-weight:500;
+  transition:all .15s;
+}
+.contact-link:hover{border-color:var(--acc);background:var(--acc-s);color:var(--acc)}
+.contact-ico{font-size:17px}
+
+/* ====================================================
+   FOOTER
+   ==================================================== */
+footer{
+  padding:28px 0;border-top:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+  font-family:var(--ffm);font-size:10.5px;color:var(--fg3);
+  letter-spacing:.08em;text-transform:uppercase;
+}
+
+
+/* ====================================================
+   MUSIC BUTTON
+   ==================================================== */
+#music-btn{
+  position:fixed;bottom:20px;right:20px;
+  z-index:200;width:40px;height:40px;
+  border-radius:50%;border:1px solid var(--line);
+  background:var(--card);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  box-shadow:0 4px 16px rgba(0,0,0,.12);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:16px;
+  transition:transform .15s,border-color .15s,background .15s;
+  outline:none;
+}
+#music-btn:hover{transform:scale(1.1);border-color:var(--acc)}
+#music-btn.playing{border-color:var(--acc);background:var(--acc-s)}
+[data-theme="terminal"] #music-btn{background:var(--bg2)}
+
+/* ====================================================
+   THEME PILL  (bottom-center)
+   ==================================================== */
+#theme-pill{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  z-index:200;display:flex;gap:2px;padding:4px;
+  border-radius:999px;
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  border:1px solid var(--line);
+  box-shadow:0 8px 32px -8px rgba(0,0,0,.22);
+  font-family:'JetBrains Mono',monospace;
+}
+[data-theme="product"] #theme-pill{background:rgba(255,255,255,.87)}
+[data-theme="editorial"] #theme-pill{background:rgba(242,239,232,.9)}
+[data-theme="terminal"] #theme-pill{background:rgba(22,27,34,.88);border-color:rgba(255,255,255,.07)}
+
+#theme-pill button{
+  appearance:none;border:none;background:transparent;
+  padding:7px 14px;font-size:11.5px;font-weight:500;
+  border-radius:999px;font-family:inherit;letter-spacing:.06em;
+  display:flex;align-items:center;gap:6px;
+  color:var(--fg3);transition:color .15s,background .15s;
+}
+#theme-pill button:hover:not(.on){color:var(--fg)}
+#theme-pill button.on{background:var(--fg);color:var(--bg)}
+[data-theme="terminal"] #theme-pill button{color:rgba(230,237,243,.38)}
+[data-theme="terminal"] #theme-pill button.on{background:rgba(230,237,243,.12);color:#e6edf3}
+[data-theme="terminal"] #theme-pill button:hover:not(.on){color:rgba(230,237,243,.75)}
+.tdot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.tdot-p{background:#2563EB}.tdot-e{background:#E63E1F}.tdot-t{background:#57A55A}
+
+@media(max-width:480px){
+  #theme-pill button{padding:6px 10px;font-size:10px}
+  #theme-pill button .lbl{display:none}
+}
+
+/* ====================================================
+   SECTION DECORATIONS
+   ==================================================== */
+/* editorial: big faint number */
+.ed-num{
+  font-family:var(--ffd);font-size:clamp(60px,12vw,120px);
+  color:var(--line);line-height:1;pointer-events:none;
+  user-select:none;margin-bottom:-16px;display:none;
+}
+[data-theme="editorial"] .ed-num{display:block}
+
+/* terminal: section header with hash */
+.term-sec-label{
+  font-family:var(--ffm);font-size:11px;color:var(--acc);
+  margin-bottom:20px;display:none;
+  letter-spacing:.1em;
+}
+[data-theme="terminal"] .term-sec-label{display:block}
+.term-sec-label::before{content:'## ';opacity:.5}
+
+/* ====================================================
+   SCROLL REVEAL
+   ==================================================== */
+.rev{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
+.rev.in{opacity:1;transform:none}
+
+/* ====================================================
+   UTILITY
+   ==================================================== */
+.section-head{margin-bottom:44px}
+.mt-8{margin-top:8px}
+.mt-16{margin-top:16px}
+.gap-section{height:40px}
+</style>
+</head>
+<body>
+
+<div id="grain"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="nav-logo" href="#top" id="nav-handle">raissov</a>
+  <div class="lang-sw" id="lang-sw">
+    <button data-l="kk" class="on">KK</button>
+    <button data-l="en">EN</button>
+  </div>
+</nav>
+
+<!-- ================================================
+     HERO
+     ================================================ -->
+<section class="hero" id="top">
+  <div class="wrap">
+
+    <!-- PRODUCT hero -->
+    <div class="only-p rev">
+      <div class="badge">
+        <span class="bdot"></span>
+        <span id="h-status"></span>
+      </div>
+      <div class="hero-inner">
+        <h1 id="h-name-p">raissov</h1>
+        <p id="h-name-full" style="font-size:16px;color:var(--fg3);font-family:var(--ffm);letter-spacing:.04em;margin-top:6px;font-weight:400"></p>
+        <p class="hero-tagline" id="h-tagline"></p>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><span class="k" id="hs-role-k"></span><span class="v" id="hs-role-v"></span></div>
+        <div class="hero-stat"><span class="k" id="hs-loc-k"></span><span class="v" id="hs-loc-v"></span></div>
+        <div class="hero-stat"><span class="k" id="hs-lang-k"></span><span class="v">KZ · EN</span></div>
+      </div>
+    </div>
+
+    <!-- EDITORIAL hero -->
+    <div class="only-e rev">
+      <div class="hero-name-row">
+        <h1 id="h-name-e"></h1>
+      </div>
+      <div class="hero-sub">
+        <div class="hero-sub-item">
+          <span class="k" id="he-role-k"></span>
+          <span class="v" id="he-role-v"></span>
+        </div>
+        <div class="hero-sub-item">
+          <span class="k" id="he-loc-k"></span>
+          <span class="v" id="he-loc-v"></span>
+        </div>
+        <div class="hero-sub-item">
+          <span class="k" id="he-status-k"></span>
+          <span class="v" id="he-status-v"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TERMINAL hero -->
+    <div class="only-t rev">
+      <div class="term-prompt">
+        <span class="p-u">raissov</span><span style="color:var(--fg3)">@</span><span class="p-h">astana</span><span style="color:var(--fg3)">:~$</span>
+        <span style="color:var(--fg2)"> whoami</span>
+      </div>
+      <h1><span id="h-name-t"></span><span class="blink"></span></h1>
+      <p style="color:var(--fg2);font-family:var(--ffm);font-size:13px;margin-top:8px" id="ht-tagline"></p>
+      <div class="term-grid mt-16" id="ht-grid"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================================================
+     ABOUT
+     ================================================ -->
+<section id="about">
+  <div class="wrap">
+    <div class="section-head rev">
+      <div class="ed-num">01</div>
+      <div class="term-sec-label" id="ab-sec-lbl"></div>
+      <span class="eyebrow" id="ab-eyebrow"></span>
+      <h2 id="ab-head"></h2>
+    </div>
+    <div class="about-grid rev">
+      <div class="about-bio" id="ab-bio"></div>
+      <div class="facts" id="ab-facts"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================
+     STACK
+     ================================================ -->
+<section id="stack" style="background:var(--bg2)">
+  <div class="wrap">
+    <div class="section-head rev">
+      <div class="ed-num">02</div>
+      <div class="term-sec-label" id="st-sec-lbl"></div>
+      <span class="eyebrow" id="st-eyebrow"></span>
+      <h2 id="st-head"></h2>
+    </div>
+    <div class="stack-grid rev" id="st-grid"></div>
+
+    <!-- LEARNING subsection -->
+    <div style="margin-top:56px" class="rev">
+      <div class="ed-num" style="margin-bottom:-8px">03</div>
+      <div class="term-sec-label" id="lr-sec-lbl"></div>
+      <span class="eyebrow" id="lr-eyebrow"></span>
+      <h2 id="lr-head" style="margin-bottom:28px"></h2>
+      <div id="lr-cards"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================
+     PROJECTS
+     ================================================ -->
+<section id="projects">
+  <div class="wrap">
+    <div class="section-head rev">
+      <div class="ed-num">04</div>
+      <div class="term-sec-label" id="pr-sec-lbl"></div>
+      <span class="eyebrow" id="pr-eyebrow"></span>
+      <h2 id="pr-head"></h2>
+    </div>
+    <div class="projects-grid" id="pr-grid"></div>
+  </div>
+</section>
+
+<!-- ================================================
+     CONTACT
+     ================================================ -->
+<section id="contact" class="contact-section">
+  <div class="wrap">
+    <div class="section-head rev">
+      <div class="ed-num">05</div>
+      <div class="term-sec-label" id="ct-sec-lbl"></div>
+      <span class="eyebrow" id="ct-eyebrow"></span>
+      <h2 id="ct-head"></h2>
+    </div>
+    <p class="contact-subtitle rev" id="ct-sub"></p>
+    <div class="contact-links rev" id="ct-links"></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;width:100%">
+    <span id="ft-left"></span>
+    <span id="ft-right"></span>
+  </div>
+</footer>
+
+<!-- MUSIC BUTTON -->
+<button id="music-btn" title="Music" aria-label="Toggle music">♪</button>
+
+<!-- THEME PILL -->
+<div id="theme-pill">
+  <button data-t="editorial" onclick="setTheme('editorial')">
+    <span class="tdot tdot-e"></span><span class="lbl">Editorial</span>
+  </button>
+  <button data-t="terminal" onclick="setTheme('terminal')">
+    <span class="tdot tdot-t"></span><span class="lbl">Terminal</span>
+  </button>
+  <button data-t="product" onclick="setTheme('product')">
+    <span class="tdot tdot-p"></span><span class="lbl">Product</span>
+  </button>
+</div>
+
+<style>
+/* theme-specific show/hide */
+.only-p,.only-e,.only-t{display:none!important}
+[data-theme="product"] .only-p{display:block!important}
+[data-theme="editorial"] .only-e{display:block!important}
+[data-theme="terminal"] .only-t{display:block!important}
+</style>
+
+<script>
+/* ============================================================
+   CONTENT  (edit here — or keep in content.js alongside)
+   ============================================================ */
+const C = {
+  meta:{
+    handle:'raissov',
+    nameKk:'Бекназар Әбдімүтәлі',nameEn:'Beknazar Abdimutali',
+    email:'raissovbeka@gmail.com',
+    github:'https://github.com/raissov01',
+    instagram:'https://instagram.com/_raissov1',
+    
+    site:'https://raissov.vercel.app',
+  },
+  hero:{
+    statusKk:'Жаңа жобаларға ашықпын',statusEn:'Open to projects',
+    roleKk:'Backend Developer',roleEn:'Backend Developer',
+    locKk:'Астана, Қазақстан',locEn:'Astana, Kazakhstan',
+    tagKk:'Go жазамын. Жүйелер саламын.',tagEn:'Writing Go. Building systems.',
+  },
+  about:{
+    headKk:'Мен туралы',headEn:'About me',
+    bio1Kk:'С. Сейфуллин атындағы ҚазАТЗУ студентімін. Backend дамытумен, Go тілімен және деректер жүйелерімен айналысамын.',
+    bio1En:'Student at KazATU (S. Seifullin). I focus on backend development, Go, and database systems.',
+    bio2Kk:'Таза код пен жақсы архитектура сүйемін. StudyWithRaissov жобасының backend бөлігін жасаймын.',
+    bio2En:'I value clean code and good architecture. Currently building the backend for StudyWithRaissov.',
+    facts:[
+      {ico:'🎓',kKk:'Университет',kEn:'University',vKk:'ҚазАТЗУ, Астана',vEn:'KazATU, Astana'},
+      {ico:'📍',kKk:'Қала',kEn:'Location',vKk:'Астана, Қазақстан',vEn:'Astana, Kazakhstan'},
+      {ico:'💬',kKk:'Тілдер',kEn:'Languages',vKk:'ҚЗ · EN',vEn:'KZ · EN'},
+      {ico:'🔍',kKk:'Қызығушылық',kEn:'Interests',vKk:'Distributed systems, open-source',vEn:'Distributed systems, open-source'},
+    ],
+  },
+  stack:{
+    headKk:'Технологиялар стегі',headEn:'Tech Stack',
+    tools:[
+      {ico:'🦫',name:'Go',      tKk:'Негізгі тіл',      tEn:'Primary language'},
+      {ico:'🐘',name:'PostgreSQL',tKk:'Деректер қоры',        tEn:'Database'},
+      {ico:'🐳',name:'Docker',  tKk:'Контейнерлеу',    tEn:'Containerisation'},
+      {ico:'🌿',name:'Git',     tKk:'Нұсқалар бақылауы',    tEn:'Version control'},
+      {ico:'🔴',name:'Redis',   tKk:'Кэш · Очередь',     tEn:'Cache & queues'},
+      {ico:'🐧',name:'Linux',   tKk:'Серверлер',            tEn:'Servers'},
+      {ico:'⚡',name:'gRPC',   tKk:'Микросервис байланысы', tEn:'Service comms'},
+    ],
+  },
+  learning:{
+    headKk:'Үйренуде',headEn:'Currently Learning',
+    items:[
+      {ico:'📨',name:'Apache Kafka',
+       dKk:'Деректер ағындары, оқиғаларға негізделген архитектура және event sourcing.',
+       dEn:'Data streaming, event-driven architecture, and event sourcing.'},
+    ],
+  },
+  projects:{
+    headKk:'Жобалар',headEn:'Projects',
+    items:[
+      {tag:'platform',
+       tKk:'StudyWithRaissov',tEn:'StudyWithRaissov',
+       dKk:'IELTS дайындық платформасы — флэшкарталар және AI-тьютор. Backend: Go + PostgreSQL + Redis.',
+       dEn:'IELTS prep platform with flashcards and AI tutor. Backend: Go + PostgreSQL + Redis.',
+       tech:['Go','PostgreSQL','Redis','Docker'],live:'https://studywithraissov.com',code:'',
+       tgChannel:'https://t.me/studywithme_r',
+       llKk:'Сайт',llEn:'Live',lcKk:'',lcEn:''},
+      {tag:'soon',
+       tKk:'Келесі жоба',tEn:'Next project',
+       dKk:'Жасалуда...',dEn:'In development...',
+       tech:[],live:'',code:'',soon:true},
+    ],
+  },
+  contact:{
+    headKk:'Байланыс',headEn:'Contact',
+    subKk:'Жаңа жобаларға, ынтымақтастыққа немесе сұрақтарға ашықпын.',
+    subEn:'Open to new projects, collaborations, or just a chat.',
+    links:[
+      {ico:'💻',lKk:'GitHub',   lEn:'GitHub',   href:'https://github.com/raissov01'},
+      {ico:'📷',lKk:'Instagram',lEn:'Instagram',href:'https://instagram.com/_raissov1'},
+      {ico:'✈️',lKk:'Telegram', lEn:'Telegram', href:'https://t.me/raissov01'},
+      {ico:'📧',lKk:'Email',    lEn:'Email',    href:'mailto:raissovbeka@gmail.com'},
+    ],
+  },
+};
+
+/* ============================================================
+   STATE
+   ============================================================ */
+const THEMES = ['product','editorial','terminal'];
+const LANGS  = ['kk','en'];
+
+function getTheme(){
+  try{const s=localStorage.getItem('rv_theme');if(s&&THEMES.includes(s))return s}catch{}
+  return 'product';
+}
+function getLang(){
+  try{const s=localStorage.getItem('rv_lang');if(s&&LANGS.includes(s))return s}catch{}
+  return 'kk';
+}
+
+let currentTheme = getTheme();
+let currentLang  = getLang();
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+function t(obj, field){
+  const kk=obj[field+'Kk']||obj[field+'kk'],
+        ru=obj[field+'Ru']||obj[field+'ru'],
+        en=obj[field+'En']||obj[field+'en'];
+  return {kk,ru,en}[currentLang]||kk||'';
+}
+function setEl(id,html){const el=document.getElementById(id);if(el)el.innerHTML=html}
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+function render(){
+  const l=currentLang;
+  const h=C.hero,a=C.about,s=C.stack,lr=C.learning,pr=C.projects,ct=C.contact,m=C.meta;
+
+  const kk = l==='kk';
+
+  /* ---------- hero ---------- */
+  const name   = kk ? m.nameKk   : m.nameEn;
+  const role   = kk ? h.roleKk   : h.roleEn;
+  const loc    = kk ? h.locKk    : h.locEn;
+  const status = kk ? h.statusKk : h.statusEn;
+  const tagline= kk ? h.tagKk    : h.tagEn;
+
+  /* product hero */
+  setEl('h-status',status);
+  setEl('h-name-p','raissov');
+  setEl('h-name-full', name);
+  setEl('h-tagline',tagline);
+  setEl('hs-role-k', kk ? 'Мамандығы' : 'Role');
+  setEl('hs-role-v', role);
+  setEl('hs-loc-k',  kk ? 'Қала'      : 'Location');
+  setEl('hs-loc-v',  loc);
+  setEl('hs-lang-k', kk ? 'Тілдер'    : 'Languages');
+
+  /* editorial hero */
+  const italic = kk ? `Бекна<em>зар</em>` : `Bekna<em>zar</em>`;
+  setEl('h-name-e',`<span>${italic}</span>`);
+  setEl('he-role-k', kk ? '01 — Мамандық' : '01 — Role');
+  setEl('he-role-v', role);
+  setEl('he-loc-k',  kk ? '02 — Қала'     : '02 — Location');
+  setEl('he-loc-v',  loc);
+  setEl('he-status-k', kk ? '03 — Статус' : '03 — Status');
+  setEl('he-status-v', status);
+
+  /* terminal hero */
+  setEl('h-name-t', name);
+  setEl('ht-tagline', '// '+tagline);
+  document.getElementById('ht-grid').innerHTML=`
+    <div class="term-cell"><div class="k">ROLE</div><div class="v">${role}</div></div>
+    <div class="term-cell"><div class="k">LOCATION</div><div class="v">${loc}</div></div>
+    <div class="term-cell"><div class="k">STACK</div><div class="v">Go · PostgreSQL · Docker</div></div>
+    <div class="term-cell"><div class="k">STATUS</div><div class="v" style="color:var(--acc)">${status}</div></div>
+  `;
+
+  /* ---------- nav ---------- */
+  document.getElementById('nav-handle').textContent='raissov';
+
+  /* ---------- about ---------- */
+  const abHead = kk ? a.headKk : a.headEn;
+  setEl('ab-eyebrow', abHead);
+  setEl('ab-head', kk ? `${m.nameKk}` : `${m.nameEn}`);
+  setEl('ab-sec-lbl', abHead);
+  const b1 = kk ? a.bio1Kk : a.bio1En;
+  const b2 = kk ? a.bio2Kk : a.bio2En;
+  document.getElementById('ab-bio').innerHTML=`<p>${b1}</p><p style="margin-top:14px">${b2}</p>`;
+  document.getElementById('ab-facts').innerHTML=a.facts.map(f=>`
+    <div class="fact">
+      <span class="fact-ico">${f.ico}</span>
+      <div>
+        <span class="fact-k">${kk ? f.kKk : f.kEn}</span>
+        <span class="fact-v">${kk ? f.vKk : f.vEn}</span>
+      </div>
+    </div>`).join('');
+
+  /* ---------- stack ---------- */
+  const stHead = kk ? s.headKk : s.headEn;
+  setEl('st-eyebrow', stHead);
+  setEl('st-head', stHead);
+  setEl('st-sec-lbl', stHead);
+  document.getElementById('st-grid').innerHTML=s.tools.map(t_=>`
+    <div class="stack-chip">
+      <span class="stack-ico">${t_.ico}</span>
+      <div>
+        <div style="font-weight:600">${t_.name}</div>
+        <div style="font-size:11px;color:var(--fg3);font-family:var(--ffm);margin-top:2px">${kk ? t_.tKk : t_.tEn}</div>
+      </div>
+    </div>`).join('');
+
+  /* ---------- learning ---------- */
+  const lrHead = kk ? lr.headKk : lr.headEn;
+  setEl('lr-eyebrow', lrHead);
+  setEl('lr-head', lrHead);
+  setEl('lr-sec-lbl', lrHead);
+  document.getElementById('lr-cards').innerHTML=lr.items.map(i=>`
+    <div class="learn-card">
+      <span class="learn-ico">${i.ico}</span>
+      <div>
+        <div class="learn-name">${i.name}</div>
+        <div class="learn-desc">${kk ? i.dKk : i.dEn}</div>
+      </div>
+    </div>`).join('');
+
+  /* ---------- projects ---------- */
+  const prHead = kk ? pr.headKk : pr.headEn;
+  setEl('pr-eyebrow', prHead);
+  setEl('pr-head', prHead);
+  setEl('pr-sec-lbl', prHead);
+  document.getElementById('pr-grid').innerHTML=pr.items.map(p_=>{
+    if(p_.soon) return `
+      <div class="proj-card soon">
+        <div class="soon-ico">🚀</div>
+        <div class="proj-title" style="font-weight:400;color:var(--fg3)">${kk ? p_.tKk : p_.tEn}</div>
+        <div class="proj-desc" style="font-size:13px;color:var(--fg3);margin-top:6px">${kk ? p_.dKk : p_.dEn}</div>
+      </div>`;
+    const techPills = p_.tech.map(t_=>`<span class="pill">${t_}</span>`).join('');
+    const links = [];
+    const ll = kk ? p_.llKk : p_.llEn;
+    const lc = kk ? p_.lcKk : p_.lcEn;
+    if(p_.live && ll) links.push(`<a class="proj-link" href="${p_.live}" target="_blank">↗ ${ll}</a>`);
+    if(p_.code && lc) links.push(`<a class="proj-link" href="${p_.code}" target="_blank">⌥ ${lc}</a>`);
+    if(p_.tgChannel) links.push(`<a class="proj-link" href="${p_.tgChannel}" target="_blank">✈️ Telegram</a>`);
+    return `
+      <div class="proj-card">
+        <span class="proj-tag">${p_.tag}</span>
+        <div class="proj-title">${kk ? p_.tKk : p_.tEn}</div>
+        <div class="proj-desc">${kk ? p_.dKk : p_.dEn}</div>
+        ${techPills ? `<div class="proj-tech">${techPills}</div>` : ''}
+        ${links.length ? `<div class="proj-links">${links.join('')}</div>` : ''}
+      </div>`;
+  }).join('');
+
+  /* ---------- contact ---------- */
+  const ctHead = kk ? ct.headKk : ct.headEn;
+  setEl('ct-eyebrow', ctHead);
+  setEl('ct-head', ctHead);
+  setEl('ct-sec-lbl', ctHead);
+  setEl('ct-sub', kk ? ct.subKk : ct.subEn);
+  document.getElementById('ct-links').innerHTML=ct.links.map(lk=>`
+    <a class="contact-link" href="${lk.href}" target="_blank" rel="noopener">
+      <span class="contact-ico">${lk.ico}</span>
+      <span>${kk ? lk.lKk : lk.lEn}</span>
+    </a>`).join('');
+
+  /* ---------- footer ---------- */
+  const yr = new Date().getFullYear();
+  setEl('ft-left', `© ${yr} raissov`);
+  setEl('ft-right', `raissov ${kk ? '— өзі жасаған' : '— self-built'}`);
+}
+
+/* ============================================================
+   THEME & LANG SWITCH
+   ============================================================ */
+function setTheme(t){
+  if(t===currentTheme) return;
+  document.body.style.opacity='0';
+  document.body.style.transition='opacity .18s ease';
+  setTimeout(()=>{
+    currentTheme=t;
+    document.documentElement.dataset.theme=t;
+    try{localStorage.setItem('rv_theme',t)}catch{}
+    document.querySelectorAll('#theme-pill button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));
+    document.body.style.opacity='1';
+  },180);
+}
+
+function setLang(l){
+  currentLang=l;
+  document.documentElement.dataset.lang=l;
+  try{localStorage.setItem('rv_lang',l)}catch{}
+  document.querySelectorAll('#lang-sw button').forEach(b=>b.classList.toggle('on',b.dataset.l===l));
+  render();
+}
+
+/* ============================================================
+   NAV scroll
+   ============================================================ */
+const navEl=document.getElementById('nav');
+window.addEventListener('scroll',()=>{
+  navEl.classList.toggle('stuck',window.scrollY>40);
+},{passive:true});
+
+/* ============================================================
+   SCROLL REVEAL
+   ============================================================ */
+const ro=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target)}});
+},{threshold:.1});
+document.querySelectorAll('.rev').forEach(el=>ro.observe(el));
+
+/* ============================================================
+   LANG SWITCHER WIRING
+   ============================================================ */
+document.getElementById('lang-sw').addEventListener('click',e=>{
+  const btn=e.target.closest('button');
+  if(btn&&btn.dataset.l) setLang(btn.dataset.l);
+});
+
+/* ============================================================
+   INIT
+   ============================================================ */
+document.documentElement.dataset.theme=currentTheme;
+document.documentElement.dataset.lang=currentLang;
+document.querySelectorAll('#theme-pill button').forEach(b=>b.classList.toggle('on',b.dataset.t===currentTheme));
+document.querySelectorAll('#lang-sw button').forEach(b=>b.classList.toggle('on',b.dataset.l===currentLang));
+render();
+
+/* Re-observe after render (dynamic content) */
+setTimeout(()=>{
+  document.querySelectorAll('.rev:not(.in)').forEach(el=>ro.observe(el));
+},50);
+
+/* ============================================================
+   MUSIC  — замени music.ogg на свою песню (Happy Williams)
+   ============================================================ */
+(function(){
+  const btn = document.getElementById('music-btn');
+  const audio = new Audio('music.webm');
+  audio.loop = true;
+  audio.volume = 0.22;
+
+  let playing = false;
+
+  function tryPlay(){
+    audio.play().then(()=>{
+      playing = true;
+      btn.textContent = '♫';
+      btn.classList.add('playing');
+    }).catch(()=>{});
+  }
+
+  // Try autoplay on load
+  window.addEventListener('load', ()=>{
+    tryPlay();
+  });
+
+  // On first any interaction if autoplay was blocked
+  function onFirstInteract(){
+    if(!playing) tryPlay();
+    document.removeEventListener('click', onFirstInteract);
+    document.removeEventListener('touchstart', onFirstInteract);
+  }
+  document.addEventListener('click', onFirstInteract, {passive:true});
+  document.addEventListener('touchstart', onFirstInteract, {passive:true});
+
+  // Button toggle
+  btn.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    if(playing){
+      audio.pause();
+      playing = false;
+      btn.textContent = '♪';
+      btn.classList.remove('playing');
+    } else {
+      tryPlay();
+    }
+  });
+})();
+
+</script>
+</body>
+</html>
